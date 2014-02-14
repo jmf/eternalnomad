@@ -40,7 +40,7 @@ int main (int argc, char** argv){
 	Player plr;
   World wrld;
   
-  wrld.genWorld(1337);//Generating world, no seed implemented yet
+  wrld.genWorld(-1);//Generating world
   plr.loadPlayer("../data/player.sve");//Load player
   timeout(100);//Timeout for keypress
 

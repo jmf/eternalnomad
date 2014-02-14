@@ -31,4 +31,4 @@ private:
   int worldarray[50][2000]; //[y][x]
 };
 
-#endif //__CONTROL_H__
+#endif //__WORLD_H__

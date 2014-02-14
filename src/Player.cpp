@@ -29,7 +29,7 @@ void Player::loadPlayer(std::string filename){//TODO: Rework for smaller files
   fdata.open(filename.c_str());
   getline(fdata, Player::name);
   
-  for(int anim=0; anim<2; anim++){
+  for(int anim=0; anim<4; anim++){
     for(int pic=0; pic<4; pic++){
       for(int part=0; part<4; part++){
         getline(fdata, Player::frame[anim][part][pic]);
@@ -40,30 +40,47 @@ void Player::loadPlayer(std::string filename){//TODO: Rework for smaller files
 }
 
 
-void Player::draw(WINDOW *win, int state)
+void Player::draw(WINDOW *win, int state)//TODO: Implement jumping
 {
   if(Player::walkvar>3)
   {
     Player::walkvar=0;
   }
-  if(state==-1){//idle
-    mvwprintw(win, 12, 20, "%s", (Player::frame[0][0][walkvar]).c_str());
-    mvwprintw(win, 13, 20, "%s", (Player::frame[0][1][walkvar]).c_str());
-    mvwprintw(win, 14, 20, "%s", (Player::frame[0][2][walkvar]).c_str());
-    mvwprintw(win, 15, 20, "%s", (Player::frame[0][3][walkvar]).c_str());
+  if(state==-1&&Player::facedir==0){//Idle right
+    Player::playerstate=0;
   }
-  else{//walk
-    mvwprintw(win, 12, 20, "%s", (Player::frame[1][0][walkvar]).c_str());
-    mvwprintw(win, 13, 20, "%s", (Player::frame[1][1][walkvar]).c_str());
-    mvwprintw(win, 14, 20, "%s", (Player::frame[1][2][walkvar]).c_str());
-    mvwprintw(win, 15, 20, "%s", (Player::frame[1][3][walkvar]).c_str());
+  else if(state==-1&&Player::facedir==1){//Idle left
+    Player::playerstate=1;
   }
+  else if(state==100){//RIGHT
+    Player::playerstate=2;
+    Player::facedir=0;
+  }
+  else if(state==97){//LEFT
+    Player::playerstate=3;
+    Player::facedir=1;
+  }
+  else{
+    //ERROR
+  }
+
+  mvwprintw(win, 12, 20, "%s", (Player::frame[Player::playerstate][0][Player::walkvar]).c_str());
+  mvwprintw(win, 13, 20, "%s", (Player::frame[Player::playerstate][1][Player::walkvar]).c_str());
+  mvwprintw(win, 14, 20, "%s", (Player::frame[Player::playerstate][2][Player::walkvar]).c_str());
+  mvwprintw(win, 15, 20, "%s", (Player::frame[Player::playerstate][3][Player::walkvar]).c_str());
+
   if(clock()-Player::timer>5000){
     Player::walkvar++;
     Player::timer=clock();
-    if(state!=-1){
-     Player::playerpos++;
+
+    if(Player::playerstate==2){
+      Player::playerpos++;
     }
+
+    else if(Player::playerstate==3){
+      Player::playerpos--;
+    }
+
   }
 }
 

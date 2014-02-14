@@ -32,7 +32,13 @@ void World::loadWorld(std::string filename){
 	fdata.close();
 }
 
-void World::genWorld(int seed){//TODO: Add code that does something
+void World::genWorld(int seed){//TODO: Add better generator
+  if(seed==-1){
+    srand(clock()%1237);
+  }
+  else{
+    srand(seed);
+  }
   for(int x=0; x<2000; x++){
     for(int y=0; y<50; y++){
       if(y>15){
@@ -44,7 +50,6 @@ void World::genWorld(int seed){//TODO: Add code that does something
     }
   }
 }
-
 
 void World::draw(WINDOW *win, int pos)
 {
