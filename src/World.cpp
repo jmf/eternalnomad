@@ -31,7 +31,7 @@ void World::loadWorld(std::string filename){
 	fdata.close();
 }
 
-void World::genWorld(int seed){
+void World::genWorld(int seed){//TODO: Add code that does something
   for(int x=0; x<80; x++){
     for(int y=0; y<50; y++){
       if(y>15){

@@ -21,19 +21,21 @@
 
 #include <string>
 #include <ncurses.h>
+#include <time.h>
 
 class Player{
 public:
   void loadPlayer(std::string filename);
-	void setClothing(int head, int body);
-  void setFace(int face);
-  void draw(WINDOW *win);
+  void draw(WINDOW *win, int state);
 private:
-  std::string walk[4][4]; //[part][animpos]
+  std::string frame[2][4][4]; //[animation][part][animpos]
   std::string name;
   int walkvar;
   int health;
 	int stamina;
+  int animstate;
+  clock_t timer;
+  double timediff;
 };
 
 #endif //__PLAYER_H__

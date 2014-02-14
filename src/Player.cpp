@@ -24,34 +24,41 @@
 
 using namespace std;
 
-void Player::loadPlayer(std::string filename){
+void Player::loadPlayer(std::string filename){//TODO: Rework for smaller files
   fstream fdata;
   fdata.open(filename.c_str());
   getline(fdata, Player::name);
   
-  for(int anim=0; anim<4; anim++){
-    for(int part=0; part<4; part++){
-      getline(fdata, Player::walk[part][anim]);
+  for(int anim=0; anim<2; anim++){
+    for(int pic=0; pic<4; pic++){
+      for(int part=0; part<4; part++){
+        getline(fdata, Player::frame[anim][part][pic]);
+      }
     }
   }
 	fdata.close();
 }
 
 
-void Player::draw(WINDOW *win)
+void Player::draw(WINDOW *win, int state)//TODO: Make walking animation time-based (time.h)
 {
-	if(walkvar>3)
+  if(Player::walkvar>3)
   {
-    walkvar=0;
+    Player::walkvar=0;
   }
-  mvwprintw(win, 12, 20, "%s", (Player::walk[0][walkvar]).c_str());
-  mvwprintw(win, 13, 20, "%s", (Player::walk[1][walkvar]).c_str());
-  mvwprintw(win, 14, 20, "%s", (Player::walk[2][walkvar]).c_str());
-  mvwprintw(win, 15, 20, "%s", (Player::walk[3][walkvar]).c_str());
-  walkvar++;
+  if(state==-1){//idle
+    mvwprintw(win, 12, 20, "%s", (Player::frame[0][0][walkvar]).c_str());
+    mvwprintw(win, 13, 20, "%s", (Player::frame[0][1][walkvar]).c_str());
+    mvwprintw(win, 14, 20, "%s", (Player::frame[0][2][walkvar]).c_str());
+    mvwprintw(win, 15, 20, "%s", (Player::frame[0][3][walkvar]).c_str());
+  }
+  else{//walk
+    mvwprintw(win, 12, 20, "%s", (Player::frame[1][0][walkvar]).c_str());
+    mvwprintw(win, 13, 20, "%s", (Player::frame[1][1][walkvar]).c_str());
+    mvwprintw(win, 14, 20, "%s", (Player::frame[1][2][walkvar]).c_str());
+    mvwprintw(win, 15, 20, "%s", (Player::frame[1][3][walkvar]).c_str());
+  }
+  Player::walkvar++;
 }
 
 
-void Player::setClothing(int a, int b){}
-
-void Player::setFace(int q){}

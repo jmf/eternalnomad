@@ -25,25 +25,38 @@
 using namespace std;
 
 int main (int argc, char** argv){
+  bool keypress=false;
+  int key=-1;
+  
   initscr();
+
   if(has_colors()==false)//Check for color support
   {
     endwin();
     cout<<"Sorry, your terminal doesn't support colors."<<endl;
 		return -1;
   }
+  
 	Player plr;
   World wrld;
-  wrld.genWorld(1337);
-  plr.loadPlayer("../data/player.sve");
+  
+  wrld.genWorld(1337);//Generating world, no seed implemented yet
+  plr.loadPlayer("../data/player.sve");//Load player
+  timeout(500);//Timeout for keypress
+
   while(true){
+    key = getch();//Keypress search
     wrld.draw(stdscr);
-    plr.draw(stdscr);
+    plr.draw(stdscr, key);
     refresh();
-    sleep(1);
   }
-  
+
   endwin();
-  
-	
+  return 0;
 }
+
+void menu(){
+  //Make a menu here...
+}
+
+
