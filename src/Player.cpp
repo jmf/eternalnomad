@@ -40,7 +40,7 @@ void Player::loadPlayer(std::string filename){//TODO: Rework for smaller files
 }
 
 
-void Player::draw(WINDOW *win, int state)//TODO: Make walking animation time-based (time.h)
+void Player::draw(WINDOW *win, int state)
 {
   if(Player::walkvar>3)
   {
@@ -58,7 +58,13 @@ void Player::draw(WINDOW *win, int state)//TODO: Make walking animation time-bas
     mvwprintw(win, 14, 20, "%s", (Player::frame[1][2][walkvar]).c_str());
     mvwprintw(win, 15, 20, "%s", (Player::frame[1][3][walkvar]).c_str());
   }
-  Player::walkvar++;
+  if(clock()-Player::timer>5000){
+    Player::walkvar++;
+    Player::timer=clock();
+    if(state!=-1){
+     Player::playerpos++;
+    }
+  }
 }
 
 

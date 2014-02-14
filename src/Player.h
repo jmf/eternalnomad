@@ -27,6 +27,7 @@ class Player{
 public:
   void loadPlayer(std::string filename);
   void draw(WINDOW *win, int state);
+  int playerpos;
 private:
   std::string frame[2][4][4]; //[animation][part][animpos]
   std::string name;

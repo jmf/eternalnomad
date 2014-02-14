@@ -26,9 +26,9 @@ class World{
 public:
   void loadWorld(std::string filename);
 	void genWorld(int seed);
-  void draw(WINDOW *win);
+  void draw(WINDOW *win, int pos);
 private:
-  int worldarray[50][100]; //[y][x]
+  int worldarray[50][2000]; //[y][x]
 };
 
 #endif //__CONTROL_H__

@@ -20,6 +20,7 @@
 #include <string>
 #include <fstream>
 #include <ncurses.h>
+#include <stdlib.h>
 #include "World.h"
 
 using namespace std;
@@ -32,34 +33,34 @@ void World::loadWorld(std::string filename){
 }
 
 void World::genWorld(int seed){//TODO: Add code that does something
-  for(int x=0; x<80; x++){
+  for(int x=0; x<2000; x++){
     for(int y=0; y<50; y++){
       if(y>15){
-        World::worldarray[y][x]=1;
+        World::worldarray[y][x]=rand()%3;
       }
       else{
-        World::worldarray[y][x]=2;
+        World::worldarray[y][x]=-1;
       }
     }
   }
 }
 
 
-void World::draw(WINDOW *win)
+void World::draw(WINDOW *win, int pos)
 {
   string temp;
-	for(int x=0; x<80; x++){
+	for(int x=0; (x-pos)<80; x++){
     for(int y=0; y<50;y++){
-      if(World::worldarray[y][x]==1){
+      if(World::worldarray[y][x]==2){
         temp="#";
       }
-			else if(World::worldarray[y][x]==2){
+			else if(World::worldarray[y][x]==-1){
         temp="~";
       }
       else{
         temp=" ";
       }
-      mvwprintw(win, y, x, "%s", temp.c_str());
+      mvwprintw(win, y, x-pos, "%s", temp.c_str());
     }
   }
 }

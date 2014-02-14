@@ -42,11 +42,11 @@ int main (int argc, char** argv){
   
   wrld.genWorld(1337);//Generating world, no seed implemented yet
   plr.loadPlayer("../data/player.sve");//Load player
-  timeout(500);//Timeout for keypress
+  timeout(100);//Timeout for keypress
 
   while(true){
     key = getch();//Keypress search
-    wrld.draw(stdscr);
+    wrld.draw(stdscr,plr.playerpos);
     plr.draw(stdscr, key);
     refresh();
   }
