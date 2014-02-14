@@ -16,34 +16,19 @@
 * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include <iostream>
+#ifndef __WORLD_H__
+#define __WORLD_H__
+
+#include <string>
 #include <ncurses.h>
-#include <unistd.h>
-#include "Player.h"
-#include "World.h"
 
-using namespace std;
+class World{
+public:
+  void loadWorld(std::string filename);
+	void genWorld(int seed);
+  void draw(WINDOW *win);
+private:
+  int worldarray[50][100]; //[y][x]
+};
 
-int main (int argc, char** argv){
-  initscr();
-  if(has_colors()==false)//Check for color support
-  {
-    endwin();
-    cout<<"Sorry, your terminal doesn't support colors."<<endl;
-		return -1;
-  }
-	Player plr;
-  World wrld;
-  wrld.genWorld(1337);
-  plr.loadPlayer("../data/player.sve");
-  while(true){
-    wrld.draw(stdscr);
-    plr.draw(stdscr);
-    refresh();
-    sleep(1);
-  }
-  
-  endwin();
-  
-	
-}
+#endif //__ROOM_H__

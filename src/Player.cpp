@@ -44,10 +44,10 @@ void Player::draw(WINDOW *win)
   {
     walkvar=0;
   }
-  mvwprintw(win, 12, 15, "%s", (Player::walk[0][walkvar]).c_str());
-  mvwprintw(win, 13, 15, "%s", (Player::walk[1][walkvar]).c_str());
-  mvwprintw(win, 14, 15, "%s", (Player::walk[2][walkvar]).c_str());
-  mvwprintw(win, 15, 15, "%s", (Player::walk[3][walkvar]).c_str());
+  mvwprintw(win, 12, 20, "%s", (Player::walk[0][walkvar]).c_str());
+  mvwprintw(win, 13, 20, "%s", (Player::walk[1][walkvar]).c_str());
+  mvwprintw(win, 14, 20, "%s", (Player::walk[2][walkvar]).c_str());
+  mvwprintw(win, 15, 20, "%s", (Player::walk[3][walkvar]).c_str());
   walkvar++;
 }
 

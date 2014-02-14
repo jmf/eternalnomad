@@ -17,33 +17,51 @@
 */
 
 #include <iostream>
+#include <string>
+#include <fstream>
 #include <ncurses.h>
-#include <unistd.h>
-#include "Player.h"
 #include "World.h"
 
 using namespace std;
 
-int main (int argc, char** argv){
-  initscr();
-  if(has_colors()==false)//Check for color support
-  {
-    endwin();
-    cout<<"Sorry, your terminal doesn't support colors."<<endl;
-		return -1;
-  }
-	Player plr;
-  World wrld;
-  wrld.genWorld(1337);
-  plr.loadPlayer("../data/player.sve");
-  while(true){
-    wrld.draw(stdscr);
-    plr.draw(stdscr);
-    refresh();
-    sleep(1);
-  }
-  
-  endwin();
-  
-	
+void World::loadWorld(std::string filename){
+  fstream fdata;
+  fdata.open(filename.c_str());
+  //TODO: Insert useful code
+	fdata.close();
 }
+
+void World::genWorld(int seed){
+  for(int x=0; x<80; x++){
+    for(int y=0; y<50; y++){
+      if(y>15){
+        World::worldarray[y][x]=1;
+      }
+      else{
+        World::worldarray[y][x]=2;
+      }
+    }
+  }
+}
+
+
+void World::draw(WINDOW *win)
+{
+  string temp;
+	for(int x=0; x<80; x++){
+    for(int y=0; y<50;y++){
+      if(World::worldarray[y][x]==1){
+        temp="#";
+      }
+			else if(World::worldarray[y][x]==2){
+        temp="~";
+      }
+      else{
+        temp=" ";
+      }
+      mvwprintw(win, y, x, "%s", temp.c_str());
+    }
+  }
+}
+
+
