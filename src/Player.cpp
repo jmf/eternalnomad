@@ -39,7 +39,6 @@ void Player::loadPlayer(std::string filename){//TODO: Rework for smaller files
 	fdata.close();
 }
 
-
 void Player::draw(WINDOW *win, int state)//TODO: Implement jumping
 {
   if(Player::walkvar>3)
@@ -64,23 +63,23 @@ void Player::draw(WINDOW *win, int state)//TODO: Implement jumping
     //ERROR
   }
 
-  mvwprintw(win, 12, 20, "%s", (Player::frame[Player::playerstate][0][Player::walkvar]).c_str());
-  mvwprintw(win, 13, 20, "%s", (Player::frame[Player::playerstate][1][Player::walkvar]).c_str());
-  mvwprintw(win, 14, 20, "%s", (Player::frame[Player::playerstate][2][Player::walkvar]).c_str());
-  mvwprintw(win, 15, 20, "%s", (Player::frame[Player::playerstate][3][Player::walkvar]).c_str());
+  mvwprintw(win, 12+Player::playerypos, 20, "%s", (Player::frame[Player::playerstate][0][Player::walkvar]).c_str());
+  mvwprintw(win, 13+Player::playerypos, 20, "%s", (Player::frame[Player::playerstate][1][Player::walkvar]).c_str());
+  mvwprintw(win, 14+Player::playerypos, 20, "%s", (Player::frame[Player::playerstate][2][Player::walkvar]).c_str());
+  mvwprintw(win, 15+Player::playerypos, 20, "%s", (Player::frame[Player::playerstate][3][Player::walkvar]).c_str());
 
-  if(clock()-Player::timer>5000){
+  if(clock()-Player::timer>5000)
+  {
     Player::walkvar++;
     Player::timer=clock();
 
     if(Player::playerstate==2){
-      Player::playerpos++;
+      Player::playerxpos++;
     }
 
     else if(Player::playerstate==3){
-      Player::playerpos--;
+      Player::playerxpos--;
     }
-
   }
 }
 

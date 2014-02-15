@@ -25,8 +25,8 @@
 using namespace std;
 
 int main (int argc, char** argv){
-  bool keypress=false;
   int key=-1;
+  int collide=0;
   
   initscr();
 
@@ -46,14 +46,33 @@ int main (int argc, char** argv){
 
   while(true){
     key = getch();//Keypress search
-    wrld.draw(stdscr,plr.playerpos);
+
+    collide = wrld.freeWay(plr.playerypos,plr.playerxpos);
+       
+    if(collide==1){
+      plr.playerxpos--;
+    }
+    else if(collide==2){
+      plr.playerypos--;
+    }
+    else if(collide==3){
+      plr.playerypos++;
+      plr.playerxpos--;
+    }
+    else if(collide==4){
+      plr.playerypos++;
+    }
+    else{}
+    
+
+    wrld.draw(stdscr,plr.playerxpos);
     plr.draw(stdscr, key);
     refresh();
   }
 
   endwin();
   return 0;
-}
+  }
 
 void menu(){
   //Make a menu here...

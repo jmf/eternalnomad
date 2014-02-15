@@ -34,7 +34,7 @@ void World::loadWorld(std::string filename){
 
 void World::genWorld(int seed){//TODO: Add better generator
   if(seed==-1){
-    srand(clock()%1237);
+    srand(clock()%1337);
   }
   else{
     srand(seed);
@@ -42,11 +42,14 @@ void World::genWorld(int seed){//TODO: Add better generator
   for(int x=0; x<2000; x++){
     for(int y=0; y<50; y++){
       if(y>15){
-        World::worldarray[y][x]=rand()%3;
+        World::worldarray[y][x]=rand()%2;
       }
       else{
         World::worldarray[y][x]=-1;
       }
+      World::worldarray[13][55]=3;
+      World::worldarray[11][43]=2;
+      World::worldarray[15][30]=1;
     }
   }
 }
@@ -54,20 +57,78 @@ void World::genWorld(int seed){//TODO: Add better generator
 void World::draw(WINDOW *win, int pos)
 {
   string temp;
-	for(int x=0; (x-pos)<80; x++){
+	for(int x=pos; (x-pos)<80; x++){
     for(int y=0; y<50;y++){
-      if(World::worldarray[y][x]==2){
+      if(World::worldarray[y][x]==1){
         temp="#";
       }
-			else if(World::worldarray[y][x]==-1){
-        temp="~";
+      else if(World::worldarray[y][x]==2)
+      {
+        temp="@";
+      }
+      else if(World::worldarray[y][x]==-1){
+        temp=" ";
       }
       else{
-        temp=" ";
+        temp="*";
       }
       mvwprintw(win, y, x-pos, "%s", temp.c_str());
     }
   }
 }
+
+int World::freeWay(int y, int x){//TODO: Proper collision handling when walking to the left -> screen vars?
+  World::wall=0;
+  World::pit=1;
+
+  for(int i=0; i<4; i++){
+    if(World::worldarray[y+12+i][x+24]!=-1){
+      World::wall=1;
+    }
+  }
+
+  if((World::worldarray[y+15][x+24]!=-1)&&(World::worldarray[y+10][x+24]==-1)){
+    World::wall=2;
+  }
+
+
+  for (int i=0; i<5; i++){
+	  if(World::worldarray[y+16][x+20+i]!=-1){
+      World::pit=0;
+    }
+  }
+	
+	if(World::pit==0&&World::wall==0){
+    return 0;
+  }
+
+	else if(World::pit==0&&World::wall==1){
+    return 1;
+  }
+
+	else if(World::pit==0&&World::wall==2){
+    return 2;
+  }
+
+	else if(World::pit==1&&World::wall==1){
+    return 3;
+  }
+
+  else if(World::pit==1&&World::wall==0){
+    return 4;
+  }
+
+  return -1;
+}
+
+
+
+
+
+
+
+
+
+
 
 

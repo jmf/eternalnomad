@@ -27,8 +27,11 @@ public:
   void loadWorld(std::string filename);
 	void genWorld(int seed);
   void draw(WINDOW *win, int pos);
+  int freeWay(int y, int x);
 private:
   int worldarray[50][2000]; //[y][x]
+  int wall;
+  int pit;
 };
 
 #endif //__WORLD_H__
