@@ -47,9 +47,26 @@ void World::genWorld(int seed){//TODO: Add better generator
       else{
         World::worldarray[y][x]=-1;
       }
-      World::worldarray[13][55]=3;
-      World::worldarray[11][43]=2;
-      World::worldarray[15][30]=1;
+
+      World::worldarray[15][35]=2;
+      World::worldarray[14][36]=2;
+      World::worldarray[13][37]=2;
+      World::worldarray[12][38]=2;
+      World::worldarray[11][39]=2;
+      World::worldarray[10][40]=2;
+      World::worldarray[10][41]=2;
+      World::worldarray[10][42]=2;
+      World::worldarray[10][43]=2;
+      World::worldarray[10][44]=2;
+      World::worldarray[11][45]=2;
+      World::worldarray[12][46]=2;
+      World::worldarray[13][47]=2;
+      World::worldarray[14][48]=2;
+      World::worldarray[15][49]=2;
+      
+      World::worldarray[16][21]=2;
+      World::worldarray[16][24]=2;
+     
     }
   }
 }
@@ -77,27 +94,47 @@ void World::draw(WINDOW *win, int pos)
   }
 }
 
-int World::freeWay(int y, int x){//TODO: Proper collision handling when walking to the left -> screen vars?
+int World::freeWay(int y, int x, int state){
   World::wall=0;
   World::pit=1;
 
-  for(int i=0; i<4; i++){
-    if(World::worldarray[y+12+i][x+24]!=-1){
-      World::wall=1;
+	if(state==100){//RIGHT
+    for(int i=0; i<4; i++){
+      if(World::worldarray[y+12+i][x+25]!=-1){
+        World::wall=1;
+      }
     }
-  }
-
-  if((World::worldarray[y+15][x+24]!=-1)&&(World::worldarray[y+10][x+24]==-1)){
-    World::wall=2;
-  }
-
-
-  for (int i=0; i<5; i++){
-	  if(World::worldarray[y+16][x+20+i]!=-1){
-      World::pit=0;
+     
+    if((World::worldarray[y+15][x+25]!=-1)&&(World::worldarray[y+10][x+25]==-1)){
+      World::wall=2;
     }
-  }
-	
+
+    for (int i=0; i<5; i++){//Falling right!
+	    if(World::worldarray[y+16][x+21+i]!=-1){
+        World::pit=0;
+      }   
+    }
+	}
+
+  else if(state==97){//LEFT
+    for(int i=0; i<4; i++){
+      if(World::worldarray[y+12+i][x+19]!=-1){
+        World::wall=1;
+      }
+    }
+    
+    if((World::worldarray[y+15][x+19]!=-1)&&(World::worldarray[y+10][x+19]==-1)){
+      World::wall=2;
+    }
+
+		for (int i=0; i<5; i++){//Falling left!
+	    if(World::worldarray[y+16][x+19+i]!=-1){
+        World::pit=0;
+      }   
+    }
+  }   
+    
+
 	if(World::pit==0&&World::wall==0){
     return 0;
   }
@@ -117,8 +154,6 @@ int World::freeWay(int y, int x){//TODO: Proper collision handling when walking 
   else if(World::pit==1&&World::wall==0){
     return 4;
   }
-
-  return -1;
 }
 
 

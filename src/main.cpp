@@ -47,26 +47,11 @@ int main (int argc, char** argv){
   while(true){
     key = getch();//Keypress search
 
-    collide = wrld.freeWay(plr.playerypos,plr.playerxpos);
-       
-    if(collide==1){
-      plr.playerxpos--;
-    }
-    else if(collide==2){
-      plr.playerypos--;
-    }
-    else if(collide==3){
-      plr.playerypos++;
-      plr.playerxpos--;
-    }
-    else if(collide==4){
-      plr.playerypos++;
-    }
-    else{}
-    
+    collide = wrld.freeWay(plr.playerypos, plr.playerxpos, key);
 
+    plr.update(key, collide);
     wrld.draw(stdscr,plr.playerxpos);
-    plr.draw(stdscr, key);
+    plr.draw(stdscr);
     refresh();
   }
 
