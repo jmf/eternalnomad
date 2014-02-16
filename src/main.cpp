@@ -45,13 +45,13 @@ int main (int argc, char** argv){
   timeout(100);//Timeout for keypress
 
   while(true){
+
     key = getch();//Keypress search
+    collide = wrld.freeWay(plr.playerypos, plr.playerxpos, key);//Check collision
 
-    collide = wrld.freeWay(plr.playerypos, plr.playerxpos, key);
-
-    plr.update(key, collide);
-    wrld.draw(stdscr,plr.playerxpos);
-    plr.draw(stdscr);
+    plr.update(key, collide);//Update player position
+    wrld.draw(stdscr,plr.playerxpos);//Draw world
+    plr.draw(stdscr);//Draw player
     refresh();
   }
 

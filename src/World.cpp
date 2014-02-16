@@ -63,10 +63,13 @@ void World::genWorld(int seed){//TODO: Add better generator
       World::worldarray[13][47]=2;
       World::worldarray[14][48]=2;
       World::worldarray[15][49]=2;
-      
-      World::worldarray[16][21]=2;
-      World::worldarray[16][24]=2;
      
+      World::worldarray[11][60]=2;
+      World::worldarray[12][60]=2;
+      World::worldarray[13][60]=2;
+      World::worldarray[14][60]=2;
+      World::worldarray[15][60]=2;
+
     }
   }
 }
@@ -94,18 +97,18 @@ void World::draw(WINDOW *win, int pos)
   }
 }
 
-int World::freeWay(int y, int x, int state){
+int World::freeWay(int y, int x, int state){//TODO:Check for headroom
   World::wall=0;
   World::pit=1;
 
 	if(state==100){//RIGHT
-    for(int i=0; i<4; i++){
+    for(int i=0; i<3; i++){
       if(World::worldarray[y+12+i][x+25]!=-1){
         World::wall=1;
       }
     }
      
-    if((World::worldarray[y+15][x+25]!=-1)&&(World::worldarray[y+10][x+25]==-1)){
+    if((World::wall!=1)&&(World::worldarray[y+15][x+25]!=-1)&&(World::worldarray[y+11][x+25]==-1)){
       World::wall=2;
     }
 
@@ -117,13 +120,13 @@ int World::freeWay(int y, int x, int state){
 	}
 
   else if(state==97){//LEFT
-    for(int i=0; i<4; i++){
+    for(int i=0; i<3; i++){
       if(World::worldarray[y+12+i][x+19]!=-1){
         World::wall=1;
       }
     }
     
-    if((World::worldarray[y+15][x+19]!=-1)&&(World::worldarray[y+10][x+19]==-1)){
+    if((World::wall!=1)&&(World::worldarray[y+15][x+19]!=-1)&&(World::worldarray[y+11][x+19]==-1)){
       World::wall=2;
     }
 
@@ -133,7 +136,14 @@ int World::freeWay(int y, int x, int state){
       }   
     }
   }   
-    
+
+  else{
+    for (int i=0; i<6; i++){//Falling down!
+	    if(World::worldarray[y+16][x+19+i]!=-1){
+        World::pit=0;
+      }   
+    }
+  }
 
 	if(World::pit==0&&World::wall==0){
     return 0;

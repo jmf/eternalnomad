@@ -32,6 +32,7 @@ private:
   int worldarray[50][2000]; //[y][x]
   int wall;
   int pit;
+  int roof;
 };
 
 #endif //__WORLD_H__

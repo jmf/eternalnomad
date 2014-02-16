@@ -39,9 +39,8 @@ void Player::loadPlayer(std::string filename){//TODO: Rework for smaller files
 	fdata.close();
 }
 
-void Player::update(int state, int collide)//TODO: Implement jumping
+void Player::update(int state, int collide)//TODO: Check if headroom free
 {
-
   if(state==-1&&Player::facedir==0){//Idle right
     Player::playerstate=0;
   }
@@ -56,8 +55,8 @@ void Player::update(int state, int collide)//TODO: Implement jumping
     Player::playerstate=3;
     Player::facedir=1;
   }
-  else{
-    //ERROR
+  else if((state==32||state==119)&&collide!=4){//Jump!
+    Player::playerypos=Player::playerypos-5;
   }
 
   if(clock()-Player::timer>5000)
@@ -94,6 +93,9 @@ void Player::update(int state, int collide)//TODO: Implement jumping
     else if(Player::playerstate==3&&collide==4){//falling left
       Player::playerypos++;
       Player::playerxpos--;
+    }  
+    else if(Player::playerstate<2&&collide==4){//falling down
+      Player::playerypos++;
     }
   }
 }
