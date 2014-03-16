@@ -37,12 +37,12 @@ int main (int argc, char** argv){
 		return -1;
   }
   
-	Player plr;
+  Player plr;
   World wrld;
   
   wrld.genWorld(-1);//Generating world
   plr.loadPlayer("../data/player.sve");//Load player
-  timeout(100);//Timeout for keypress
+  timeout(50);//Timeout for keypress
 
   while(true){
 
