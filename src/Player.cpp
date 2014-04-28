@@ -42,66 +42,64 @@ void Player::loadPlayer(std::string filename){//TODO: Rework for smaller files
 void Player::update(int state, int collide)//TODO: Check if headroom free
 {
   
-  if(clock()-Player::timer>30000){
+  Player::walkvar++;
 
-    Player::walkvar++;
-    Player::timer=clock();
+  if(state==-1&&Player::facedir==0){//Idle right
+    Player::playerstate=0;
+  }
 
-    if(state==-1&&Player::facedir==0){//Idle right
-      Player::playerstate=0;
-    }
+  else if(state==-1&&Player::facedir==1){//Idle left
+    Player::playerstate=1;
+  }
 
-    else if(state==-1&&Player::facedir==1){//Idle left
-      Player::playerstate=1;
-    }
+  else if(state==100){//RIGHT
+    Player::playerstate=2;
+    Player::facedir=0;
+  }
 
-    else if(state==100){//RIGHT
-      Player::playerstate=2;
-      Player::facedir=0;
-    }
-
-    else if(state==97){//LEFT
+  else if(state==97){//LEFT
       Player::playerstate=3;
       Player::facedir=1;
-    }
+  }
 
-    else if((state==32||state==119)&&collide!=4){//Jump!
-      Player::playerypos=Player::playerypos-5;
-    }
+  else if((state==32||state==119)&&collide!=4){//Jump!
+    Player::playerypos=Player::playerypos-5;
+  }
 
-    if(Player::playerstate==2&&collide==0){//Free right
-      Player::playerxpos++; 
-    }
+  if(Player::playerstate==2&&collide==0){//Free right
+    Player::playerxpos++; 
+  }
 
-      else if(Player::playerstate==3&&collide==0){//Free left
-      Player::playerxpos--;
-    }
+  else if(Player::playerstate==3&&collide==0){//Free left
+    Player::playerxpos--;
+  }
 
-    else if(Player::playerstate==2&&collide==2){//Step right
-      Player::playerypos--;
-      Player::playerxpos++;
-    }
+  else if(Player::playerstate==2&&collide==2){//Step right
+    Player::playerypos--;
+    Player::playerxpos++;
+  }
 
-    else if(Player::playerstate==3&&collide==2){//Step left
-      Player::playerypos--;
-      Player::playerxpos--;
-    }
+  else if(Player::playerstate==3&&collide==2){//Step left
+    Player::playerypos--;
+    Player::playerxpos--;
+  }
 
-    else if(collide==3){//Wall in the way and falling
-      Player::playerypos++;
-    }
+  else if(collide==3){//Wall in the way and falling
+    Player::playerypos++;
+  }
 
-    if(Player::playerstate==2&&collide==4){//falling right
-      Player::playerypos++;
-      Player::playerxpos++;
-    }
-    else if(Player::playerstate==3&&collide==4){//falling left
-      Player::playerypos++;
-      Player::playerxpos--;
-    }  
-    else if(Player::playerstate<2&&collide==4){//falling down
-      Player::playerypos++;
-    }
+  if(Player::playerstate==2&&collide==4){//falling right
+    Player::playerypos++;
+    Player::playerxpos++;
+  }
+
+  else if(Player::playerstate==3&&collide==4){//falling left
+    Player::playerypos++;
+    Player::playerxpos--;
+  }
+  
+  else if(Player::playerstate<2&&collide==4){//falling down
+    Player::playerypos++;
   }
 }
 

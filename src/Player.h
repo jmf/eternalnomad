@@ -38,7 +38,6 @@ private:
   int walkvar;
   int health;
 	int stamina;
-  clock_t timer;
 };
 
 #endif //__PLAYER_H__

@@ -25,6 +25,8 @@
 using namespace std;
 
 int main (int argc, char** argv){
+
+  clock_t timer;
   int key=-1;
   int collide=0;
   
@@ -42,17 +44,25 @@ int main (int argc, char** argv){
   
   wrld.genWorld(-1);//Generating world
   plr.loadPlayer("../data/player.sve");//Load player
-  timeout(50);//Timeout for keypress
+  timeout(10);//Timeout for keypress
 
   while(true){
+    timer=clock();
 
-    key = getch();//Keypress search
-    collide = wrld.freeWay(plr.playerypos, plr.playerxpos, key);//Check collision
-
-    plr.update(key, collide);//Update player position
     wrld.draw(stdscr,plr.playerxpos);//Draw world
     plr.draw(stdscr);//Draw player
-    refresh();
+    refresh();//Refresh terminal
+
+    key = getch();//Keypress search
+
+    collide = wrld.freeWay(plr.playerypos, plr.playerxpos, key);//Check collision
+    plr.update(key, collide);//Update player position
+
+    flushinp();//Flush input buffer
+
+    while(clock()-timer<30000){
+      usleep(10);
+    }
   }
 
   endwin();
