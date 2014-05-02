@@ -5,10 +5,11 @@ A commandline sandbox game about an eternal travel.
 ==Compiling==
 
 mkdir bin
-cd bin
-cmake ..
-make
+sh compile.sh
 
+==Running==
+
+cd bin
 ./eternalnomad
 
 ==MIT License==

@@ -16,23 +16,17 @@
 * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#ifndef __WORLD_H__
-#define __WORLD_H__
+#ifndef WORLD_H
+#define WORLD_H
 
-#include <string>
 #include <ncurses.h>
 
-class World{
-public:
-  void loadWorld(std::string filename);
-	void genWorld(int seed);
-  void draw(WINDOW *win, int pos);
-  int freeWay(int y, int x, int state);
-private:
+struct World{
   int worldarray[50][2000]; //[y][x]
   int wall;
   int pit;
   int roof;
 };
 
-#endif //__WORLD_H__
+#endif //WORLD_H
+

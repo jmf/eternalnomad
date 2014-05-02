@@ -16,23 +16,17 @@
 * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#ifndef __PLAYER_H__
-#define __PLAYER_H__
+#ifndef PLAYER_H
+#define PLAYER_H
 
-#include <string>
 #include <ncurses.h>
 #include <time.h>
 
-class Player{
-public:
-  void loadPlayer(std::string filename);
-  void update(int state, int collide);
-  void draw(WINDOW *win);
+struct Player{
   int playerxpos;
   int playerypos;
-private:
-  std::string frame[4][4][4]; //[animation][part][animpos]
-  std::string name;
+  char frame[4][4][4][4]; //[animation][part][animpos]
+  char *name;
   int playerstate;
   int facedir;
   int walkvar;
@@ -40,4 +34,5 @@ private:
 	int stamina;
 };
 
-#endif //__PLAYER_H__
+#endif //PLAYER_H
+
