@@ -19,6 +19,7 @@
 #include <iostream>
 #include <ncurses.h>
 #include <unistd.h>
+#include "time.h"
 #include "Player.h"
 #include "World.h"
 
@@ -26,17 +27,19 @@ using namespace std;
 
 int main (int argc, char** argv){
 
-  clock_t timer;
+  bool timed=false;
   int key=-1;
   int collide=0;
-  
+  struct timespec old;
+  struct timespec tp;
+
   initscr();
 
   if(has_colors()==false)//Check for color support
   {
     endwin();
     cout<<"Sorry, your terminal doesn't support colors."<<endl;
-		return -1;
+		return 1;
   }
   
   Player plr;
@@ -47,12 +50,7 @@ int main (int argc, char** argv){
   timeout(10);//Timeout for keypress
 
   while(true){
-    timer=clock();
-
-    wrld.draw(stdscr,plr.playerxpos);//Draw world
-    plr.draw(stdscr);//Draw player
-    refresh();//Refresh terminal
-
+    clock_gettime(CLOCK_MONOTONIC, &old);
     key = getch();//Keypress search
 
     collide = wrld.freeWay(plr.playerypos, plr.playerxpos, key);//Check collision
@@ -60,14 +58,30 @@ int main (int argc, char** argv){
 
     flushinp();//Flush input buffer
 
-    while(clock()-timer<30000){
-      usleep(10);
-    }
-  }
+    wrld.draw(stdscr,plr.playerxpos);//Draw world
+    plr.draw(stdscr);//Draw player
+    refresh();//Refresh terminal
 
+    while(timed==false){
+      clock_gettime(CLOCK_MONOTONIC, &tp);
+
+      if(tp.tv_nsec<=(old.tv_nsec+500000000)){ //0.5 seconds per frame
+        timed=false;
+      }
+      else{
+        timed=true;
+      }
+
+      if(tp.tv_sec>old.tv_sec){ //If frame took longer than one second
+        timed=true;
+      }
+    }
+    timed=false;
+
+  }
   endwin();
   return 0;
-  }
+}
 
 void menu(){
   //Make a menu here...
