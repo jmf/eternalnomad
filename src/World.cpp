@@ -25,6 +25,24 @@
 
 using namespace std;
 
+enum collision{
+R_FREE=0,
+R_STEP=1,
+R_WALL=2,
+R_WALLPIT=3,
+R_PIT=4,
+
+L_FREE=5,
+L_STEP=6,
+L_WALL=7,
+L_WALLPIT=8,
+L_PIT=9,
+
+JUMP=10,
+FALL=11,
+IDLE=12
+};
+
 void World::loadWorld(std::string filename){
   fstream fdata;
   fdata.open(filename.c_str());
@@ -97,83 +115,119 @@ void World::draw(WINDOW *win, int pos)
   }
 }
 
-int World::freeWay(int y, int x, int state){//TODO:Check for headroom
+
+int World::goWay(int y, int x, int state){//TODO:Check for headroom
   World::wall=0;
   World::pit=1;
+  World::step=0;
 
 	if(state==100){//RIGHT
-    for(int i=0; i<3; i++){
-      if(World::worldarray[y+12+i][x+25]!=-1){
-        World::wall=1;
-      }
-    }
-     
-    if((World::wall!=1)&&(World::worldarray[y+15][x+25]!=-1)&&(World::worldarray[y+11][x+25]==-1)){
-      World::wall=2;
-    }
 
-    for (int i=0; i<5; i++){//Falling right!
+    for (int i=0; i<6; i++){//Falling down!
 	    if(World::worldarray[y+16][x+21+i]!=-1){
         World::pit=0;
       }   
     }
-	}
+
+    for(int i=0; i<3; i++){//Check for wall
+      if(World::worldarray[y+12+i][x+24]!=-1){
+        World::wall=1;
+      }
+    }
+
+    if((World::wall!=1)&&(World::worldarray[y+15][x+24]!=-1)&&(World::worldarray[y+11][x+24]==-1)){//Check for step
+      World::step=1;
+    }
+
+    if(World::step==1){
+      return R_STEP;
+    }
+
+    if(World::wall==1 && World::pit==0){
+      return R_WALL;
+    }
+
+    else if(World::wall==1 && World::pit==1){
+      return R_WALLPIT;
+    }
+
+    else if(World::wall==0 && World::pit==1){
+      return R_PIT;
+    }
+    else{
+      return R_FREE;
+    }
+   
+  }
+
 
   else if(state==97){//LEFT
+
+    for (int i=0; i<6; i++){//Falling down!
+	    if(World::worldarray[y+16][x+17+i]!=-1){
+        World::pit=0;
+      }   
+    }
+
     for(int i=0; i<3; i++){
       if(World::worldarray[y+12+i][x+19]!=-1){
         World::wall=1;
       }
     }
-    
-    if((World::wall!=1)&&(World::worldarray[y+15][x+19]!=-1)&&(World::worldarray[y+11][x+19]==-1)){
-      World::wall=2;
+  
+    if((World::wall!=1)&&(World::worldarray[y+15][x+19]!=-1)&&(World::worldarray[y+11][x+19]==-1)){//Check for step
+      World::step=1;
+    }  
+  
+    if(World::step==1){
+      return L_STEP;
     }
 
-		for (int i=0; i<5; i++){//Falling left!
-	    if(World::worldarray[y+16][x+19+i]!=-1){
+    if(World::wall==1 && World::pit==0){
+      return L_WALL;
+    }
+
+    else if(World::wall==1 && World::pit==1){
+      return L_WALLPIT;
+    }
+
+    else if(World::wall==0 && World::pit==1){
+      return L_PIT;
+    }
+    else{
+      return L_FREE;
+    }
+  }
+
+  else if(state==32||state==119){
+    for (int i=0; i<6; i++){//Falling down!
+	    if(World::worldarray[y+16][x+21+i]!=-1){
         World::pit=0;
       }   
     }
-  }   
+
+    if(World::pit==0){
+      return JUMP;
+    }
+    else{
+      return FALL;
+    }
+  }
 
   else{
-    for (int i=0; i<6; i++){//Falling down!
-	    if(World::worldarray[y+16][x+19+i]!=-1){
+    for (int i=0; i<3; i++){//Falling down!
+	    if(World::worldarray[y+16][x+21+i]!=-1){
         World::pit=0;
       }   
     }
+    if(World::pit!=0){
+      return FALL;
+    }
+    else{
+      return IDLE;
+    }
   }
-
-	if(World::pit==0&&World::wall==0){
-    return 0;
-  }
-
-	else if(World::pit==0&&World::wall==1){
-    return 1;
-  }
-
-	else if(World::pit==0&&World::wall==2){
-    return 2;
-  }
-
-	else if(World::pit==1&&World::wall==1){
-    return 3;
-  }
-
-  else if(World::pit==1&&World::wall==0){
-    return 4;
-  }
+  return IDLE;
 }
-
-
-
-
-
-
-
-
-
-
 
 

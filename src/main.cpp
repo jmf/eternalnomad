@@ -53,8 +53,8 @@ int main (int argc, char** argv){
     clock_gettime(CLOCK_MONOTONIC, &old);
     key = getch();//Keypress search
 
-    collide = wrld.freeWay(plr.playerypos, plr.playerxpos, key);//Check collision
-    plr.update(key, collide);//Update player position
+    collide = wrld.goWay(plr.playerypos, plr.playerxpos, key);//Check collision
+    plr.update(collide);//Update player position
 
     flushinp();//Flush input buffer
 
