@@ -201,7 +201,7 @@ int World::goWay(int y, int x, int state){//TODO:Check for headroom
 
   else if(state==32||state==119){
     for (int i=0; i<6; i++){//Falling down!
-	    if(World::worldarray[y+16][x+21+i]!=-1){
+	    if(World::worldarray[y+16][x+20+i]!=-1){
         World::pit=0;
       }   
     }
@@ -215,8 +215,8 @@ int World::goWay(int y, int x, int state){//TODO:Check for headroom
   }
 
   else{
-    for (int i=0; i<3; i++){//Falling down!
-	    if(World::worldarray[y+16][x+21+i]!=-1){
+    for (int i=0; i<4; i++){//Falling down!
+	    if(World::worldarray[y+16][x+20+i]!=-1){
         World::pit=0;
       }   
     }
