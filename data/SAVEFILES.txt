@@ -1,0 +1,36 @@
+--==Structure of eternalnomad savefiles==--
+
+1.: The player savefile
+
+A player figure is defined by a 4x4 field:
+
+1234
+5678
+ABCD
+EFGH
+
+The top row is the hat.
+The second row is the head.
+The third row is arms and body.
+The bottom row are the legs.
+
+For every animation, there need to be four player figures.
+The required animations are:
+
+Idle Right
+Idle Left
+Walk Right
+Walk Left
+
+Look at player.sve for an example.
+
+2.: The world savefile
+
+The top line contains the seed.
+Then there are lines with the formatting:
+
+material:y:x
+
+The y/x positions of the generated world are overwritten with the material values.
+
+

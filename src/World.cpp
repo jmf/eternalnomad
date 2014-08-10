@@ -25,6 +25,12 @@
 
 using namespace std;
 
+enum mats{
+HASH=0,
+CONCRETE=2,
+AIR=10
+};
+
 enum collision{
 R_FREE=0,
 R_STEP=1,
@@ -43,68 +49,89 @@ FALL=11,
 IDLE=12
 };
 
-void World::loadWorld(std::string filename){
+void World::loadWorld(std::string filename){//TODO: Throw an error or give error message when world not loadable || TODO: x:y instead of y:x
+  int strpos;
+  string mapdata;
+  string material; //Used material
+  string pos; //x:y
+  string xpos; //x position of material
+  string ypos; //y position of material
   fstream fdata;
-  fdata.open(filename.c_str());
-  //TODO: Insert useful code
+  fdata.open(("../data/"+filename).c_str());
+  if(fdata.is_open()){//Does file work?
+
+    if(!fdata.eof()){
+      getline(fdata, mapdata);
+      World::seed=Str2Int(mapdata);
+    }
+
+    World::genWorld(World::seed);
+  
+    while(!fdata.eof()){
+      pos="";
+      xpos="";
+      ypos="";
+      mapdata="";
+  
+      getline(fdata, mapdata);
+      //Split material:x:y into material and y:x
+      strpos=mapdata.find(":");
+      string material=mapdata.substr(0, strpos);
+      string pos=mapdata.substr(strpos+1, 50);
+      //Split y:x into x and y
+      strpos=pos.find(":");
+      string y=pos.substr(0, strpos);
+      string x=pos.substr(strpos+1,50);
+      //Apply to map:
+      if( (material!="") && (x!="") && (y!="") ){
+        if((Str2Int(x)>0) && (Str2Int(x)<2001) && (Str2Int(y)>0) && (Str2Int(y)<51){
+          World::worldarray[Str2Int(y)][Str2Int(x)]=Str2Int(material);
+        }
+      }
+    }
+  }
+  else{
+    World::genWorld(-1);
+  }
+
 	fdata.close();
 }
 
+
 void World::genWorld(int seed){//TODO: Add better generator
   if(seed==-1){
-    srand(clock()%1337);
+    World::seed=clock()%1337;
   }
   else{
-    srand(seed);
+    World::seed=seed;
   }
+  srand(World::seed);
+
   for(int x=0; x<2000; x++){
     for(int y=0; y<50; y++){
       if(y>15){
         World::worldarray[y][x]=rand()%2;
       }
       else{
-        World::worldarray[y][x]=-1;
+        World::worldarray[y][x]=AIR;
       }
-
-      World::worldarray[15][35]=2;
-      World::worldarray[14][36]=2;
-      World::worldarray[13][37]=2;
-      World::worldarray[12][38]=2;
-      World::worldarray[11][39]=2;
-      World::worldarray[10][40]=2;
-      World::worldarray[10][41]=2;
-      World::worldarray[10][42]=2;
-      World::worldarray[10][43]=2;
-      World::worldarray[10][44]=2;
-      World::worldarray[11][45]=2;
-      World::worldarray[12][46]=2;
-      World::worldarray[13][47]=2;
-      World::worldarray[14][48]=2;
-      World::worldarray[15][49]=2;
-     
-      World::worldarray[11][60]=2;
-      World::worldarray[12][60]=2;
-      World::worldarray[13][60]=2;
-      World::worldarray[14][60]=2;
-      World::worldarray[15][60]=2;
-
     }
   }
 }
 
-void World::draw(WINDOW *win, int pos)
-{
+
+void World::draw(WINDOW *win, int pos){
   string temp;
 	for(int x=pos; (x-pos)<80; x++){
     for(int y=0; y<50;y++){
-      if(World::worldarray[y][x]==1){
+      if(World::worldarray[y][x]==HASH){
         temp="#";
       }
-      else if(World::worldarray[y][x]==2)
+      else if(World::worldarray[y][x]==CONCRETE)
       {
         temp="@";
       }
-      else if(World::worldarray[y][x]==-1){
+      else if(World::worldarray[y][x]==AIR){
         temp=" ";
       }
       else{
@@ -124,18 +151,18 @@ int World::goWay(int y, int x, int state){//TODO:Check for headroom
 	if(state==100){//RIGHT
 
     for (int i=0; i<6; i++){//Falling down!
-	    if(World::worldarray[y+16][x+21+i]!=-1){
+	    if(World::worldarray[y+16][x+21+i]!=AIR){
         World::pit=0;
       }   
     }
 
     for(int i=0; i<3; i++){//Check for wall
-      if(World::worldarray[y+12+i][x+24]!=-1){
+      if(World::worldarray[y+12+i][x+24]!=AIR){
         World::wall=1;
       }
     }
 
-    if((World::wall!=1)&&(World::worldarray[y+15][x+24]!=-1)&&(World::worldarray[y+11][x+24]==-1)){//Check for step
+    if((World::wall!=1)&&(World::worldarray[y+15][x+24]!=AIR)&&(World::worldarray[y+11][x+24]==AIR)){//Check for step
       World::step=1;
     }
 
@@ -164,18 +191,18 @@ int World::goWay(int y, int x, int state){//TODO:Check for headroom
   else if(state==97){//LEFT
 
     for (int i=0; i<6; i++){//Falling down!
-	    if(World::worldarray[y+16][x+17+i]!=-1){
+	    if(World::worldarray[y+16][x+17+i]!=AIR){
         World::pit=0;
       }   
     }
 
     for(int i=0; i<3; i++){
-      if(World::worldarray[y+12+i][x+19]!=-1){
+      if(World::worldarray[y+12+i][x+19]!=AIR){
         World::wall=1;
       }
     }
   
-    if((World::wall!=1)&&(World::worldarray[y+15][x+19]!=-1)&&(World::worldarray[y+11][x+19]==-1)){//Check for step
+    if((World::wall!=1)&&(World::worldarray[y+15][x+19]!=AIR)&&(World::worldarray[y+11][x+19]==AIR)){//Check for step
       World::step=1;
     }  
   
@@ -201,7 +228,7 @@ int World::goWay(int y, int x, int state){//TODO:Check for headroom
 
   else if(state==32||state==119){
     for (int i=0; i<6; i++){//Falling down!
-	    if(World::worldarray[y+16][x+20+i]!=-1){
+	    if(World::worldarray[y+16][x+20+i]!=AIR){
         World::pit=0;
       }   
     }
@@ -216,7 +243,7 @@ int World::goWay(int y, int x, int state){//TODO:Check for headroom
 
   else{
     for (int i=0; i<4; i++){//Falling down!
-	    if(World::worldarray[y+16][x+20+i]!=-1){
+	    if(World::worldarray[y+16][x+20+i]!=AIR){
         World::pit=0;
       }   
     }
@@ -230,4 +257,13 @@ int World::goWay(int y, int x, int state){//TODO:Check for headroom
   return IDLE;
 }
 
+int World::Str2Int(string input){//TODO: Make it less hacky
+  int multiplicator=1;
+  int output=0;
+  for(int n=input.size()-1; n>=0; n--){
+    output=output+(input[n]-48)*multiplicator;
+    multiplicator=multiplicator*10;
+  }
+  return output;
+}
 

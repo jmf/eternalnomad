@@ -22,13 +22,17 @@
 #include <string>
 #include <ncurses.h>
 
+using namespace std;
+
 class World{
 public:
   void loadWorld(std::string filename);
 	void genWorld(int seed);
   void draw(WINDOW *win, int pos);
   int goWay(int y, int x, int state);
+  int Str2Int(string input);
 private:
+  int seed;
   int worldarray[50][2000]; //[y][x]
   bool wall;
   bool pit;

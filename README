@@ -9,7 +9,17 @@ cd bin
 cmake ..
 make
 
+==Run==
+
+Run without arguments:
+
 ./eternalnomad
+
+Define worldfile:
+
+./eternalnomad worldfile.wld
+
+This will load the worldfile from ../data/worldfile.wld.
 
 ==MIT License==
 

@@ -44,7 +44,7 @@ using namespace std;
 
 void Player::loadPlayer(std::string filename){//TODO: Rework for smaller files
   fstream fdata;
-  fdata.open(filename.c_str());
+  fdata.open(("../data/"+filename).c_str());
   getline(fdata, Player::name);
   
   for(int anim=0; anim<4; anim++){
