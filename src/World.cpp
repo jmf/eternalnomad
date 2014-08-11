@@ -84,7 +84,7 @@ void World::loadWorld(std::string filename){//TODO: Throw an error or give error
       string x=pos.substr(strpos+1,50);
       //Apply to map:
       if( (material!="") && (x!="") && (y!="") ){
-        if((Str2Int(x)>0) && (Str2Int(x)<2001) && (Str2Int(y)>0) && (Str2Int(y)<51){
+        if((Str2Int(x)>0) && (Str2Int(x)<2001) && (Str2Int(y)>0) && (Str2Int(y)<51)){
           World::worldarray[Str2Int(y)][Str2Int(x)]=Str2Int(material);
         }
       }
