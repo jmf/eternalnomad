@@ -27,77 +27,77 @@ using namespace std;
 
 int main (int argc, char** argv){
 
-  bool timed=false;
-  int key=-1;
-  int collide=0;
-  struct timespec old;
-  struct timespec tp;
+	bool timed=false;
+	int key=-1;
+	int collide=0;
+	struct timespec old;
+	struct timespec tp;
 
-  Player plr;
-  World wrld;
-  
+	Player plr;
+	World wrld;
+	
 
-  if(argc==1){
-    wrld.genWorld(-1);//TODO: Allow player to choose custom seed
-  }
-  else if(argc==2){
-    wrld.loadWorld(argv[1]);
-  }
-  else{
-    cout<<"Bad Arguments!"<<endl;
-    cout<<"Try \"./eternalnomad\" or \"./eternalnomad <worldfile>\""<<endl;
-    return 1;
-  }
-
-
-  plr.loadPlayer("player.sve");//Load player
-
-  initscr();
-
-  if(has_colors()==false)//Check for color support
-  {
-    endwin();
-    cout<<"Sorry, your terminal doesn't support colors."<<endl;
+	if(argc==1){
+		wrld.genWorld(-1);//TODO: Allow player to choose custom seed
+	}
+	else if(argc==2){
+		wrld.loadWorld(argv[1]);
+	}
+	else{
+		cout<<"Bad Arguments!"<<endl;
+		cout<<"Try \"./eternalnomad\" or \"./eternalnomad <worldfile>\""<<endl;
 		return 1;
-  }
-  timeout(10);//Timeout for keypress
+	}
 
-  while(true){
-    clock_gettime(CLOCK_MONOTONIC, &old);
-    key = getch();//Keypress search
 
-    collide = wrld.goWay(plr.playerypos, plr.playerxpos, key);//Check collision
-    plr.update(collide);//Update player position
+	plr.loadPlayer("player.sve");//Load player
 
-    flushinp();//Flush input buffer
+	initscr();
 
-    wrld.draw(stdscr,plr.playerxpos);//Draw world
-    plr.draw(stdscr);//Draw player
-    refresh();//Refresh terminal
+	if(has_colors()==false)//Check for color support
+	{
+		endwin();
+		cout<<"Sorry, your terminal doesn't support colors."<<endl;
+		return 1;
+	}
+	timeout(10);//Timeout for keypress
 
-    while(timed==false){
-      clock_gettime(CLOCK_MONOTONIC, &tp);
+	while(true){
+		clock_gettime(CLOCK_MONOTONIC, &old);
+		key = getch();//Keypress search
 
-      if(tp.tv_nsec<=(old.tv_nsec+500000000)){ //0.5 seconds per frame
-        timed=false;
-      }
-      else{
-        timed=true;
-      }
+		collide = wrld.goWay(plr.playerypos, plr.playerxpos, key);//Check collision
+		plr.update(collide);//Update player position
 
-      if(tp.tv_sec>old.tv_sec){ //If frame took longer than one second
-        timed=true;
-      }
-    }
-    timed=false;
+		flushinp();//Flush input buffer
 
-  }
-  endwin();
-  return 0;
+		wrld.draw(stdscr,plr.playerxpos);//Draw world
+		plr.draw(stdscr);//Draw player
+		refresh();//Refresh terminal
+
+		while(timed==false){
+			clock_gettime(CLOCK_MONOTONIC, &tp);
+
+			if(tp.tv_nsec<=(old.tv_nsec+500000000)){ //0.5 seconds per frame
+				timed=false;
+			}
+			else{
+				timed=true;
+			}
+
+			if(tp.tv_sec>old.tv_sec){ //If frame took longer than one second
+				timed=true;
+			}
+		}
+		timed=false;
+
+	}
+	endwin();
+	return 0;
 }
 
 void menu(){
-  //Make a menu here...
+	//Make a menu here...
 }
 
 

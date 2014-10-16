@@ -43,104 +43,104 @@ IDLE=12
 using namespace std;
 
 void Player::loadPlayer(std::string filename){//TODO: Rework for smaller files
-  fstream fdata;
-  fdata.open(("../data/"+filename).c_str());
-  getline(fdata, Player::name);
-  
-  for(int anim=0; anim<4; anim++){
-    for(int pic=0; pic<4; pic++){
-      for(int part=0; part<4; part++){
-        getline(fdata, Player::frame[anim][part][pic]);
-      }
-    }
-  }
-  fdata.close();
+	fstream fdata;
+	fdata.open(("../data/"+filename).c_str());
+	getline(fdata, Player::name);
+	
+	for(int anim=0; anim<4; anim++){
+		for(int pic=0; pic<4; pic++){
+			for(int part=0; part<4; part++){
+				getline(fdata, Player::frame[anim][part][pic]);
+			}
+		}
+	}
+	fdata.close();
 }
 
 void Player::update(int collide)//TODO: Make falling a bit more flowing
 {
-  if(collide<5){
-    Player::playerstate=2;
-  }
-  else if(collide<10){
-    Player::playerstate=3;
-  }
+	if(collide<5){
+		Player::playerstate=2;
+	}
+	else if(collide<10){
+		Player::playerstate=3;
+	}
 
-  if(collide==R_FREE){
-    Player::playerxpos++;
-    Player::walkvar++;
-  }
-  else if(collide==R_STEP){
-    Player::playerxpos++;
-    Player::playerypos--;
-    Player::walkvar++;
-  }
-  else if(collide==R_WALL){
-  }
-  else if(collide==R_WALLPIT){
-    Player::playerypos++;
-  }
-  else if(collide==R_PIT){
-    Player::playerxpos++;
-    Player::playerypos++;
-    Player::walkvar++;
-  }
+	if(collide==R_FREE){
+		Player::playerxpos++;
+		Player::walkvar++;
+	}
+	else if(collide==R_STEP){
+		Player::playerxpos++;
+		Player::playerypos--;
+		Player::walkvar++;
+	}
+	else if(collide==R_WALL){
+	}
+	else if(collide==R_WALLPIT){
+		Player::playerypos++;
+	}
+	else if(collide==R_PIT){
+		Player::playerxpos++;
+		Player::playerypos++;
+		Player::walkvar++;
+	}
 
 
-  else if(collide==L_FREE){
-    Player::playerxpos--;
-    Player::walkvar++;
-  }
-  else if(collide==L_STEP){
-    Player::playerxpos--;
-    Player::playerypos--;
-    Player::walkvar++;
-  }
-  else if(collide==L_WALL){
-    
-  }
-  else if(collide==L_WALLPIT){
-    Player::playerypos++;
-  }
-  else if(collide==L_PIT){
-    Player::playerxpos--;
-    Player::playerypos++;
-    Player::walkvar++;
-  }
+	else if(collide==L_FREE){
+		Player::playerxpos--;
+		Player::walkvar++;
+	}
+	else if(collide==L_STEP){
+		Player::playerxpos--;
+		Player::playerypos--;
+		Player::walkvar++;
+	}
+	else if(collide==L_WALL){
+		
+	}
+	else if(collide==L_WALLPIT){
+		Player::playerypos++;
+	}
+	else if(collide==L_PIT){
+		Player::playerxpos--;
+		Player::playerypos++;
+		Player::walkvar++;
+	}
 
-  else if(collide==JUMP){
-    playerypos=playerypos-5;
-  }
+	else if(collide==JUMP){
+		playerypos=playerypos-5;
+	}
 
-  else if(collide==IDLE || collide==FALL){
-    if(Player::playerstate==2){
-      Player::playerstate=0;
-    }
-    else if(Player::playerstate==3){
-      Player::playerstate=1;
-    }
+	else if(collide==IDLE || collide==FALL){
+		if(Player::playerstate==2){
+			Player::playerstate=0;
+		}
+		else if(Player::playerstate==3){
+			Player::playerstate=1;
+		}
 
-    if(collide==FALL){
-      Player::playerypos++;
-    }
-    Player::walkvar++;
-  }
+		if(collide==FALL){
+			Player::playerypos++;
+		}
+		Player::walkvar++;
+	}
 
 }
 
 
 void Player::draw(WINDOW *win)
 {
-  
-  if(Player::walkvar>3)
-  {
-    Player::walkvar=0;
-  }
+	
+	if(Player::walkvar>3)
+	{
+		Player::walkvar=0;
+	}
 
-  mvwprintw(win, 12+Player::playerypos, 20, "%s", (Player::frame[Player::playerstate][0][Player::walkvar]).c_str());
-  mvwprintw(win, 13+Player::playerypos, 20, "%s", (Player::frame[Player::playerstate][1][Player::walkvar]).c_str());
-  mvwprintw(win, 14+Player::playerypos, 20, "%s", (Player::frame[Player::playerstate][2][Player::walkvar]).c_str());
-  mvwprintw(win, 15+Player::playerypos, 20, "%s", (Player::frame[Player::playerstate][3][Player::walkvar]).c_str());
+	mvwprintw(win, 12+Player::playerypos, 20, "%s", (Player::frame[Player::playerstate][0][Player::walkvar]).c_str());
+	mvwprintw(win, 13+Player::playerypos, 20, "%s", (Player::frame[Player::playerstate][1][Player::walkvar]).c_str());
+	mvwprintw(win, 14+Player::playerypos, 20, "%s", (Player::frame[Player::playerstate][2][Player::walkvar]).c_str());
+	mvwprintw(win, 15+Player::playerypos, 20, "%s", (Player::frame[Player::playerstate][3][Player::walkvar]).c_str());
 
 }
 

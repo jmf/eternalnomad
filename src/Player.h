@@ -25,18 +25,18 @@
 
 class Player{
 public:
-  void loadPlayer(std::string filename);
-  void update(int collide);
-  void draw(WINDOW *win);
-  int playerxpos;
-  int playerypos;
+	void loadPlayer(std::string filename);
+	void update(int collide);
+	void draw(WINDOW *win);
+	int playerxpos;
+	int playerypos;
 private:
-  std::string frame[4][4][4]; //[animation][part][animpos]
-  std::string name;
-  int playerstate;
-  int facedir;
-  int walkvar;
-  int health;
+	std::string frame[4][4][4]; //[animation][part][animpos]
+	std::string name;
+	int playerstate;
+	int facedir;
+	int walkvar;
+	int health;
 	int stamina;
 };
 
