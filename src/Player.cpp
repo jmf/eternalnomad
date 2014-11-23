@@ -23,124 +23,90 @@
 #include "Player.h"
 
 enum collision{
-R_FREE=0,
-R_STEP=1,
-R_WALL=2,
-R_WALLPIT=3,
-R_PIT=4,
-
-L_FREE=5,
-L_STEP=6,
-L_WALL=7,
-L_WALLPIT=8,
-L_PIT=9,
-
-JUMP=10,
-FALL=11,
-IDLE=12
+FREE=0,
+STEP=1,
+PIT=2,
+JUMP=3
 };
+
 
 using namespace std;
 
 void Player::loadPlayer(std::string filename){//TODO: Rework for smaller files
 	fstream fdata;
 	fdata.open(("../data/"+filename).c_str());
-	getline(fdata, Player::name);
+	getline(fdata, name);
 	
 	for(int anim=0; anim<4; anim++){
 		for(int pic=0; pic<4; pic++){
 			for(int part=0; part<4; part++){
-				getline(fdata, Player::frame[anim][part][pic]);
+				getline(fdata, frame[anim][part][pic]);
 			}
 		}
 	}
 	fdata.close();
 }
 
-void Player::update(int collide)//TODO: Make falling a bit more flowing
+void Player::update(int collide, int dir)
 {
-	if(collide<5){
-		Player::playerstate=2;
-	}
-	else if(collide<10){
-		Player::playerstate=3;
-	}
+	//PLAYERSTATE: 0 rightface, 1 leftface, 2 rightgo, 3 leftgo
 
-	if(collide==R_FREE){
-		Player::playerxpos++;
-		Player::walkvar++;
+	int headroom=0;
+
+
+	if(dir>=2){
+		headroom=dir-2;
+		dir=0;	
 	}
-	else if(collide==R_STEP){
-		Player::playerxpos++;
-		Player::playerypos--;
-		Player::walkvar++;
+	else if(dir==1){
+		playerstate=2;
 	}
-	else if(collide==R_WALL){
+	else if(dir==-1){
+		playerstate=3;
 	}
-	else if(collide==R_WALLPIT){
-		Player::playerypos++;
-	}
-	else if(collide==R_PIT){
-		Player::playerxpos++;
-		Player::playerypos++;
-		Player::walkvar++;
+	else if(dir==0){
+		if(playerstate==2){
+			playerstate=0;
+		}
+		else if(playerstate==3){
+			playerstate=1;
+		}
 	}
 
 
-	else if(collide==L_FREE){
-		Player::playerxpos--;
-		Player::walkvar++;
+	playerxpos=playerxpos+dir; //Player direction
+
+	if(collide==FREE){
+		walkvar++;
 	}
-	else if(collide==L_STEP){
-		Player::playerxpos--;
-		Player::playerypos--;
-		Player::walkvar++;
+	
+	else if(collide==STEP){
+		playerypos--;
+		walkvar++;
 	}
-	else if(collide==L_WALL){
-		
-	}
-	else if(collide==L_WALLPIT){
-		Player::playerypos++;
-	}
-	else if(collide==L_PIT){
-		Player::playerxpos--;
-		Player::playerypos++;
-		Player::walkvar++;
+
+	else if(collide==PIT){
+		playerypos++;
+		walkvar++;
 	}
 
 	else if(collide==JUMP){
-		playerypos=playerypos-5;
+		playerypos=playerypos-headroom;
 	}
-
-	else if(collide==IDLE || collide==FALL){
-		if(Player::playerstate==2){
-			Player::playerstate=0;
-		}
-		else if(Player::playerstate==3){
-			Player::playerstate=1;
-		}
-
-		if(collide==FALL){
-			Player::playerypos++;
-		}
-		Player::walkvar++;
-	}
-
 }
-
 
 void Player::draw(WINDOW *win)
 {
 	
-	if(Player::walkvar>3)
+	if(walkvar>3)
 	{
-		Player::walkvar=0;
+		walkvar=0;
 	}
 
-	mvwprintw(win, 12+Player::playerypos, 20, "%s", (Player::frame[Player::playerstate][0][Player::walkvar]).c_str());
-	mvwprintw(win, 13+Player::playerypos, 20, "%s", (Player::frame[Player::playerstate][1][Player::walkvar]).c_str());
-	mvwprintw(win, 14+Player::playerypos, 20, "%s", (Player::frame[Player::playerstate][2][Player::walkvar]).c_str());
-	mvwprintw(win, 15+Player::playerypos, 20, "%s", (Player::frame[Player::playerstate][3][Player::walkvar]).c_str());
+	mvwprintw(win, 12+playerypos, 20, "%s", (frame[playerstate][0][walkvar]).c_str());
+	mvwprintw(win, 13+playerypos, 20, "%s", (frame[playerstate][1][walkvar]).c_str());
+	mvwprintw(win, 14+playerypos, 20, "%s", (frame[playerstate][2][walkvar]).c_str());
+	mvwprintw(win, 15+playerypos, 20, "%s", (frame[playerstate][3][walkvar]).c_str());
 
 }
 

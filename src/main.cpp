@@ -29,6 +29,7 @@ int main (int argc, char** argv){
 
 	bool timed=false;
 	int key=-1;
+	int dir=0;
 	int collide=0;
 	struct timespec old;
 	struct timespec tp;
@@ -66,13 +67,27 @@ int main (int argc, char** argv){
 		clock_gettime(CLOCK_MONOTONIC, &old);
 		key = getch();//Keypress search
 
-		collide = wrld.goWay(plr.playerypos, plr.playerxpos, key);//Check collision
-		plr.update(collide);//Update player position
+		if(key==100){//Direction of walking
+			dir=1;
+		}
+		else if(key==97){
+			dir=-1;
+		}
+		else if(key==32||key==119){
+			dir=2;
+		}
+		else{
+			dir=0;
+		}
+
+		collide = wrld.goWay(plr.playerypos, plr.playerxpos,&dir);//Check collision
+		plr.update(collide, dir);//Update player position
 
 		flushinp();//Flush input buffer
 
 		wrld.draw(stdscr,plr.playerxpos);//Draw world
 		plr.draw(stdscr);//Draw player
+
 		refresh();//Refresh terminal
 
 		while(timed==false){
@@ -89,15 +104,11 @@ int main (int argc, char** argv){
 				timed=true;
 			}
 		}
-		timed=false;
+	timed=false;
 
 	}
 	endwin();
 	return 0;
-}
-
-void menu(){
-	//Make a menu here...
 }
 
 
