@@ -25,6 +25,8 @@
 
 class Player{
 public:
+	Player();
+	~Player();
 	void loadPlayer(std::string filename);
 	void update(int collide, int dir);
 	void draw(WINDOW *win);

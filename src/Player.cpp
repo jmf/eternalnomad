@@ -32,6 +32,13 @@ JUMP=3
 
 using namespace std;
 
+Player::Player(){
+	playerstate=playerypos=walkvar=0; //Reset variables
+}
+
+Player::~Player(){
+}
+
 void Player::loadPlayer(std::string filename){//TODO: Rework for smaller files
 	fstream fdata;
 	fdata.open(("../data/"+filename).c_str());

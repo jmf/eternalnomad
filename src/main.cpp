@@ -28,6 +28,7 @@ using namespace std;
 int main (int argc, char** argv){
 
 	bool timed=false;
+	bool fight=false;
 	int key=-1;
 	int dir=0;
 	int collide=0;
@@ -67,33 +68,41 @@ int main (int argc, char** argv){
 		clock_gettime(CLOCK_MONOTONIC, &old);
 		key = getch();//Keypress search
 
-		if(key==100){//Direction of walking
-			dir=1;
-		}
-		else if(key==97){
-			dir=-1;
-		}
-		else if(key==32||key==119){
-			dir=2;
-		}
-		else{
-			dir=0;
+		if(fight==false) //Normal gameplay
+		{
+
+			if(key==100){//Direction of walking
+				dir=1;
+			}
+			else if(key==97){
+				dir=-1;
+			}
+			else if(key==32||key==119){
+				dir=2;
+			}
+			else{
+				dir=0;
+			}
+
+			collide = wrld.goWay(plr.playerypos, plr.playerxpos,&dir);//Check collision
+			plr.update(collide, dir);//Update player position
+
+			flushinp();//Flush input buffer
+	
+			wrld.draw(stdscr,plr.playerxpos);//Draw world
+			plr.draw(stdscr);//Draw player
 		}
 
-		collide = wrld.goWay(plr.playerypos, plr.playerxpos,&dir);//Check collision
-		plr.update(collide, dir);//Update player position
+	else if(fight==true){
 
-		flushinp();//Flush input buffer
-
-		wrld.draw(stdscr,plr.playerxpos);//Draw world
-		plr.draw(stdscr);//Draw player
-
-		refresh();//Refresh terminal
+	}	
+	
+	refresh();//Refresh terminal
 
 		while(timed==false){
 			clock_gettime(CLOCK_MONOTONIC, &tp);
 
-			if(tp.tv_nsec<=(old.tv_nsec+500000000)){ //0.5 seconds per frame
+			if(tp.tv_nsec<=(old.tv_nsec+200000000)){ //0.2 seconds per frame
 				timed=false;
 			}
 			else{
