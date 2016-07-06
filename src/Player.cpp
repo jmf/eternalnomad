@@ -34,6 +34,7 @@ using namespace std;
 
 Player::Player(){
 	playerstate=playerypos=walkvar=0; //Reset variables
+	playerxpos=0;
 }
 
 Player::~Player(){
